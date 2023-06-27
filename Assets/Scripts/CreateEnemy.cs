@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CreateEnemy : MonoBehaviour
 {
-    private Transform[] _points;
     [SerializeField] private Rigidbody _enemy;
     [SerializeField] private float _respawnTime;
     [SerializeField] private float _runningTime;
+    
+    private Transform[] _points;
 
     private void Start()
     {
