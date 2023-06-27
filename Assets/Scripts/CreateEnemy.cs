@@ -4,31 +4,35 @@ using UnityEngine;
 
 public class CreateEnemy : MonoBehaviour
 {
+    [SerializeField] private Enemy _enemy;
+
     private Transform[] _points;
-    [SerializeField] private Rigidbody _enemy;
-    [SerializeField] private float _respawnTime;
-    [SerializeField] private float _runningTime;
+    private bool _isWork;
 
     private void Start()
     {
         _points = new Transform[transform.childCount];
+        _isWork = true;
 
         for (int i = 0; i < transform.childCount; i++)
         {
             _points[i] = transform.GetChild(i);
         }
+
+        var addEnemyJob = StartCoroutine(AddEnemy());
     }
 
-    private void Update()
+    private IEnumerator AddEnemy()
     {
-        _runningTime += Time.deltaTime;
+        var waitTwoSeconds = new WaitForSeconds(2f);
 
-        if (_runningTime >= _respawnTime)
+        while (_isWork)
         {
             int numberOfRespawn = Random.Range(0, _points.Length);
 
+            yield return waitTwoSeconds;
+
             Instantiate(_enemy, _points[numberOfRespawn].transform);
-            _runningTime = 0;
         }
     }
 }
