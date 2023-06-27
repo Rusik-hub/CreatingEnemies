@@ -26,6 +26,7 @@ public class CreateEnemy : MonoBehaviour
         if (_runningTime >= _respawnTime)
         {
             int numberOfRespawn = Random.Range(0, _points.Length);
+
             Instantiate(_enemy, _points[numberOfRespawn].transform);
             _runningTime = 0;
         }
