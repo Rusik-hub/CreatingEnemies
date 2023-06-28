@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreateEnemy : MonoBehaviour
+public class EnemyCreator : MonoBehaviour
 {
-    [SerializeField] private Enemy _enemy;
+    [SerializeField] private Enemy _enemyPrefab;
 
     private Transform[] _points;
     private bool _isWork;
@@ -32,7 +32,7 @@ public class CreateEnemy : MonoBehaviour
 
             yield return waitTwoSeconds;
 
-            Instantiate(_enemy, _points[numberOfRespawn].transform);
+            Instantiate(_enemyPrefab, _points[numberOfRespawn].transform);
         }
     }
 }
