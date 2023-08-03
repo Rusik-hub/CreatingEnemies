@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private List<Enemy> _enemyPrefabs;
-    [SerializeField] private Transform[] _targets;
-    [SerializeField] private Transform[] _parentsForEnemies;
+    [SerializeField] private Enemy _enemyPrefab;
+    [SerializeField] private List<Transform> _targets;
+    [SerializeField] private Transform _enemyContainer;
 
     [SerializeField, Range(0.1f, 10f)] private float _spawnSpeed;
 
@@ -15,6 +15,15 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         _isWork = true;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).TryGetComponent<Path>(out Path path))
+                _targets = path.GetPath();
+
+            if (transform.GetChild(i).TryGetComponent<EnemyContainer>(out EnemyContainer container))
+                _enemyContainer = container.transform;
+        }
 
         var addEnemyJob = StartCoroutine(AddEnemy());
     }
@@ -25,13 +34,13 @@ public class EnemySpawner : MonoBehaviour
 
         while (_isWork)
         {
-            int enemyIndex = Random.Range(0, _targets.Length);
+            int startPointIndex = 0;
 
             yield return delay;
 
-            Enemy enemy = Instantiate(_enemyPrefabs[enemyIndex], _targets[enemyIndex].transform.position, Quaternion.identity, _parentsForEnemies[enemyIndex]);
+            Enemy enemy = Instantiate(_enemyPrefab, _targets[startPointIndex].transform.position, Quaternion.identity, _enemyContainer);
 
-            enemy.Init(_targets[enemyIndex].GetComponent<Path>().GetPath());
+            enemy.Init(_targets);
         }
     }
 }

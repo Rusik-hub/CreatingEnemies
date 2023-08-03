@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]private Transform _currentTarget;
-    [SerializeField]private List<Transform> _targets;
-    [SerializeField]private int _targetIndex = 0;
+    [SerializeField, Range(0.1f, 10f)] private float _speed;
 
-    private float _speed = 1f;
+    [SerializeField] private Transform _currentTarget;
+    [SerializeField] private List<Transform> _targets;
+    [SerializeField] private int _targetIndex = 0;
 
     public void Init(List<Transform> targets)
     {
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.GetComponent<Target>())
+        if (collision.GetComponent<Target>() && _targets.Contains(collision.transform))
         {
             _targetIndex++;
 
